@@ -11,7 +11,8 @@ const authrouter = require('./Routers/authRouter');
 
 app.use(express.static("../client"));
 app.use(express.json());
-app.use(express.urlencoded({extended : true}))
+app.use(express.urlencoded({ extended: true }));
+
 mongoConnect();
 
 app.use(router);

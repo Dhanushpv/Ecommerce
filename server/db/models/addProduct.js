@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;  
 
 const productSchema = new mongoose.Schema({
   title: {
@@ -16,11 +17,13 @@ const productSchema = new mongoose.Schema({
     min: 0,
   },
   category: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref :'categories'
     // required: true,
   },
   gender : {
-    type :String
+    type: Schema.Types.ObjectId,
+    ref : 'Gender'
   },
   brand: {
     type: String,

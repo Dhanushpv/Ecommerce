@@ -17,6 +17,7 @@ router.get('/individualUser/:id',userController.soloUser);
 router.get('/fetchCategory',userController.fetchingCategory);
 router.get('/fetchGender',userController.fetchingGender);
 router.post('/uploadProducts', upload.array('images', 5), userController.addProducts);
+router.get('/fullProductList',userController.viewAllProducts)
 
 
 

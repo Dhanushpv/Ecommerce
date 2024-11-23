@@ -211,66 +211,28 @@ exports.fetchingGender = async function (req, res) {
 
 }
 
-// exports.addProducts = async function (req, res) {
-//     try {
-//         const body = req.body;
-
-//         // Fetch related data from the database
-//         const category = await Categories.findOne({ category: body.category });
-//         const gender = await Gender.findOne({ gender: body.gender });
-
-//         // Construct images array with URL and optional altText
-//         const images = req.files?.['images[]']?.map(file => ({
-//             url: file.path, // Use the file path as the image URL
-//             altText: body.altText || '', // Use provided altText or default to an empty string
-//         })) || [];
-
-//         // Construct product data
-//         const data = {
-//             title: body.title,
-//             description: body.description,
-//             price: body.price,
-//             category: category,
-//             gender: gender,
-//             brand: body.brand,
-//             stock: body.stock,
-//             rating: body.rating,
-//             images: images, // Attach images to the product data
-//         };
-
-//         // Save product data to the database
-//         const productData = await AddData.create(data);
-//         console.log('productData', productData);
-
-//         // Respond with success
-//         const response = success_function({
-//             success: true,
-//             statuscode: 200,
-//             message: "Product successfully added.",
-//             data: productData,
-//         });
-//         res.status(response.statuscode).send(response);
-
-//     } catch (error) {
-//         console.error("error: ", error);
-
-//         // Respond with error
-//         const response = error_function({
-//             success: false,
-//             statuscode: 400,
-//             message: "Error adding product",
-//         });
-//         res.status(response.statuscode).send(response);
-//     }
-// };
-
 exports.addProducts = async (req, res) => {
     try {
         const body = req.body;
 
         // Fetch related data
         const category = await Categories.findOne({ category: body.category });
+        console.log("category",category)
+
+        let category_id = category._id;
+        console.log("category_id",category_id);
+        body.category=category_id
+
+
+
         const gender = await Gender.findOne({ gender: body.gender });
+        console.log("gender",gender)
+
+        let gender_id = gender._id;
+        console.log("gender_id",gender_id);
+        body.gender=gender_id
+
+        
 
         // Log the uploaded files to debug
         console.log("Uploaded Files:", req.files);  // Should show the files
@@ -280,22 +242,10 @@ exports.addProducts = async (req, res) => {
             url: file.path,  // Store the file path
             alt: req.body.altText || 'Product Image',  // Optional alt text
         }));
+        body.images =images
 
-        // Construct and save product data
-        const data = {
-            title: body.title,
-            description: body.description,
-            price: body.price,
-            category,
-            gender,
-            brand: body.brand,
-            stock: body.stock,
-            rating: body.rating,
-            images,  // Add the processed images
-        };
 
-        // Save product data in the database
-        const productData = await AddData.create(data);
+        const productData = await AddData.create(body);
         console.log(productData);
         res.status(200).send({ success: true, message: 'Product successfully added.', data: productData });
     } catch (error) {
@@ -303,4 +253,39 @@ exports.addProducts = async (req, res) => {
         res.status(400).send({ success: false, message: "Error adding product" });
     }
 };
+
+exports.viewAllProducts = async (req, res) => {
+    try {
+
+
+
+        let productOverview = await AddData.find().populate('category').populate('gender');
+
+        let response = success_function({
+            success: true,
+            statuscode: 200,
+            data: productOverview,
+            message: "User successfully added.",
+
+        });
+        res.status(response.statuscode).send(response);
+        return;
+
+    }
+
+    catch (error) {
+
+        console.log("error: ", error);
+        let response = error_function({
+            success: false,
+            statuscode: 400,
+            message: "Error adding user"
+        });
+        res.status(response.statuscode).send(response);
+        return;
+    }
+}
+
+
+
 
