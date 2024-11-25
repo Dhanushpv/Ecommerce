@@ -357,7 +357,6 @@ async function buyerSection() {
 
 async function fetchUserDetails() {
     let params = new URLSearchParams(window.location.search);
-
     let id = params.get('id');
     let token_key = params.get('login');
     let token = localStorage.getItem(token_key);
@@ -400,16 +399,22 @@ async function fetchUserDetails() {
             
         `;
 
-        
+        let responseofProductList = await fetch('/fetchCategory', {
+            method: 'GET'
+        });
+        let parsed_data = await responseofProductList.json();
+        console.log("parsed_data", parsed_data);
 
+        let dataofProductList = parsed_data.data;
+        console.log("data", dataofProductList);
+
+        let ProductList  = document.getElementById('productListContainer');
 
     } catch (error) {
         console.error("Error fetching user details:", error);
         document.getElementById("user-details").innerHTML =
             "<p>Unable to load user details. Please try again later.</p>";
     }
-
-
 
 }
 
@@ -441,7 +446,7 @@ async function AddProducts(event) {
     let brand = document.getElementById('brand').value.trim();
     let stock = document.getElementById('stock').value.trim();
     let rating = document.getElementById('rating').value.trim();
-    let images = document.getElementById('images');
+    let images = document.getElementById('image');
 
     if (!title || !description || !price || !category || !gender || !brand || !stock || !rating) {
         alert("All fields are required. Please fill out the form completely.");
@@ -487,8 +492,84 @@ async function AddProducts(event) {
 
 
 
-// category hover
+// addProduct file input type section
+const imageInput = document.getElementById("image");
+const uploadMessage = document.getElementById("upload-message");
+const svgIcon = document.querySelector(".header svg"); // Select the SVG icon
 
+imageInput.addEventListener("change", (event) => {
+  // Remove the SVG icon when an image is uploaded
+  if (svgIcon) {
+    svgIcon.remove();
+  }
 
+  // Clear the current content of the message
+  uploadMessage.innerHTML = "";
 
+  // Get the selected files
+  const files = event.target.files;
+
+  // Loop through each file
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    // Ensure the file is an image
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+
+      // When the file is loaded, create an img element with a remove button
+      reader.onload = (e) => {
+        // Container for the image and button
+        const imageContainer = document.createElement("div");
+        imageContainer.style.position = "relative";
+        imageContainer.style.display = "inline-block";
+        imageContainer.style.margin = "5px";
+
+        // Create the image
+        const img = document.createElement("img");
+        img.src = e.target.result;
+        img.style.width = "200px";
+        img.style.height = "200px";
+        img.style.objectFit = "contain";
+        img.style.border = "1px solid black";
+      
+        img.alt = file.name;
+
+        // Create the remove button
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "✖";
+        removeButton.style.position = "absolute";
+        removeButton.style.top = "0";
+        removeButton.style.right = "0";
+        removeButton.style.backgroundColor = "red";
+        removeButton.style.color = "white";
+        removeButton.style.border = "none";
+        removeButton.style.borderRadius = "50%";
+        removeButton.style.cursor = "pointer";
+        removeButton.style.width = "20px";
+        removeButton.style.height = "20px";
+        removeButton.style.display = "flex";
+        removeButton.style.justifyContent = "center";
+        removeButton.style.alignItems = "center";
+
+        // Add click event to remove the image
+        removeButton.addEventListener("click", () => {
+          imageContainer.remove();
+        });
+
+        // Append the image and button to the container
+        imageContainer.appendChild(img);
+        imageContainer.appendChild(removeButton);
+
+        // Append the container to the upload message
+        uploadMessage.appendChild(imageContainer);
+      };
+
+      // Read the file as a data URL
+      reader.readAsDataURL(file);
+    }
+  }
+});
+
+// addProduct file input type section END.......
 

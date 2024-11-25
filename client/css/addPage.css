@@ -59,13 +59,14 @@ span:hover{
   justify-content: space-between;
   padding:10px;
   gap: 5px;
-  background-color: rgba(0, 110, 255, 0.041);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(0, 0, 0);
 }
 
 .header {
   flex: 1;
   width: 100%;
-  border: 2px dashed royalblue;
+  border: 2px dashed rgb(0, 0, 0);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -83,7 +84,7 @@ span:hover{
 }
 
 .footer {
-  background-color: rgba(0, 110, 255, 0.075);
+  background-color:rgb(224,224,224);
   width: 100%;
   height: 40px;
   padding: 8px;
@@ -116,3 +117,140 @@ span:hover{
 }
 
 /* <!-- ui verse --> */
+
+/* Hide the actual file input */
+/* #image {
+  display: none;
+} */
+
+/* Style the custom label */
+.custom-label {
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.custom-label span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Optional: Add some margin for the file input area */
+.custom-file-upload {
+  margin-top: 10px;
+}
+
+
+/* Header styling */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header svg {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 16px;
+  color: #000000;
+  font-weight: bold;
+}
+
+/* Footer styling (custom file input area) */
+.footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: rgb(0, 0, 0)f;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgb(0, 0, 0);
+
+}
+
+/* .footer:hover {
+  background-color: #000000;
+} */
+
+.footer svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  fill: white;
+}
+
+.footer p {
+  margin: 0;
+}
+
+/* Hiding the file input */
+.file_inputtype {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Additional hover effects for interaction feedback */
+.footer:active {
+  transform: scale(0.98);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .container1 {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .header p,
+  .footer p {
+    font-size: 14px;
+  }
+}
+
+
+.file_inputtype {
+  display: none;
+}
+
+.carousel {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.carousel img {
+  flex: 0 0 auto;
+  max-height: 100px;
+  max-width: auto;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#upload-message {
+  text-align: center;
+  color: black;
+}
