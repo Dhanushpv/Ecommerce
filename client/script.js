@@ -166,7 +166,7 @@ async function AddUser(event) {
     }
 
 }
- 
+
 function logout() {
     console.log("Reached....at log out");
 
@@ -399,16 +399,46 @@ async function fetchUserDetails() {
             
         `;
 
-        let responseofProductList = await fetch('/fetchCategory', {
+        let responseofProductList = await fetch('/fullProductList', {
             method: 'GET'
         });
         let parsed_data = await responseofProductList.json();
-        console.log("parsed_data", parsed_data);
-
+        console.log("ProductList", parsed_data);
+        
         let dataofProductList = parsed_data.data;
-        console.log("data", dataofProductList);
-
-        let ProductList  = document.getElementById('productListContainer');
+        console.log("dataofProductList", dataofProductList);
+        
+        let getAllprducts = document.getElementById("productListContainer");
+        let rows = '';
+        
+        for (let i = 0; i < dataofProductList.length; i++) {
+            // Get the images for the current product
+            let images = dataofProductList[i].images;
+            console.log("Images for product", i, images);
+        
+            // Loop through each image for this product
+            for (let j = 0; j < images.length; j++) {
+                rows += `
+                    <ul class="cards">
+                        <li>
+                            <a href="" class="card">
+                                <img src="${images[j]}" class="card__image" alt="Product Image ${j + 1}" />
+                                <div class="card__overlay">
+                                    <div class="card__header">
+                                        <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                                    </div>
+                                    <p class="card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis?</p>
+                                </div>
+                            </a>      
+                        </li>
+                    </ul>
+                `;
+            }
+        }
+        
+        // Update the inner HTML with the new rows
+        getAllprducts.innerHTML = rows;
+        
 
     } catch (error) {
         console.error("Error fetching user details:", error);
@@ -498,77 +528,77 @@ const uploadMessage = document.getElementById("upload-message");
 const svgIcon = document.querySelector(".header svg"); // Select the SVG icon
 
 imageInput.addEventListener("change", (event) => {
-  // Remove the SVG icon when an image is uploaded
-  if (svgIcon) {
-    svgIcon.remove();
-  }
-
-  // Clear the current content of the message
-  uploadMessage.innerHTML = "";
-
-  // Get the selected files
-  const files = event.target.files;
-
-  // Loop through each file
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-
-    // Ensure the file is an image
-    if (file.type.startsWith("image/")) {
-      const reader = new FileReader();
-
-      // When the file is loaded, create an img element with a remove button
-      reader.onload = (e) => {
-        // Container for the image and button
-        const imageContainer = document.createElement("div");
-        imageContainer.style.position = "relative";
-        imageContainer.style.display = "inline-block";
-        imageContainer.style.margin = "5px";
-
-        // Create the image
-        const img = document.createElement("img");
-        img.src = e.target.result;
-        img.style.width = "200px";
-        img.style.height = "200px";
-        img.style.objectFit = "contain";
-        img.style.border = "1px solid black";
-      
-        img.alt = file.name;
-
-        // Create the remove button
-        const removeButton = document.createElement("button");
-        removeButton.textContent = "✖";
-        removeButton.style.position = "absolute";
-        removeButton.style.top = "0";
-        removeButton.style.right = "0";
-        removeButton.style.backgroundColor = "red";
-        removeButton.style.color = "white";
-        removeButton.style.border = "none";
-        removeButton.style.borderRadius = "50%";
-        removeButton.style.cursor = "pointer";
-        removeButton.style.width = "20px";
-        removeButton.style.height = "20px";
-        removeButton.style.display = "flex";
-        removeButton.style.justifyContent = "center";
-        removeButton.style.alignItems = "center";
-
-        // Add click event to remove the image
-        removeButton.addEventListener("click", () => {
-          imageContainer.remove();
-        });
-
-        // Append the image and button to the container
-        imageContainer.appendChild(img);
-        imageContainer.appendChild(removeButton);
-
-        // Append the container to the upload message
-        uploadMessage.appendChild(imageContainer);
-      };
-
-      // Read the file as a data URL
-      reader.readAsDataURL(file);
+    // Remove the SVG icon when an image is uploaded
+    if (svgIcon) {
+        svgIcon.remove();
     }
-  }
+
+    // Clear the current content of the message
+    uploadMessage.innerHTML = "";
+
+    // Get the selected files
+    const files = event.target.files;
+
+    // Loop through each file
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        // Ensure the file is an image
+        if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
+
+            // When the file is loaded, create an img element with a remove button
+            reader.onload = (e) => {
+                // Container for the image and button
+                const imageContainer = document.createElement("div");
+                imageContainer.style.position = "relative";
+                imageContainer.style.display = "inline-block";
+                imageContainer.style.margin = "5px";
+
+                // Create the image
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.style.width = "200px";
+                img.style.height = "200px";
+                img.style.objectFit = "contain";
+                img.style.border = "1px solid black";
+
+                img.alt = file.name;
+
+                // Create the remove button
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "✖";
+                removeButton.style.position = "absolute";
+                removeButton.style.top = "0";
+                removeButton.style.right = "0";
+                removeButton.style.backgroundColor = "";
+                removeButton.style.color = "white";
+                removeButton.style.border = "none";
+                removeButton.style.borderRadius = "50%";
+                removeButton.style.cursor = "pointer";
+                removeButton.style.width = "20px";
+                removeButton.style.height = "20px";
+                removeButton.style.display = "flex";
+                removeButton.style.justifyContent = "center";
+                removeButton.style.alignItems = "center";
+
+                // Add click event to remove the image
+                removeButton.addEventListener("click", () => {
+                    imageContainer.remove();
+                });
+
+                // Append the image and button to the container
+                imageContainer.appendChild(img);
+                imageContainer.appendChild(removeButton);
+
+                // Append the container to the upload message
+                uploadMessage.appendChild(imageContainer);
+            };
+
+            // Read the file as a data URL
+            reader.readAsDataURL(file);
+        }
+    }
 });
 
 // addProduct file input type section END.......
